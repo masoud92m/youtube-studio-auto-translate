@@ -25,8 +25,8 @@ function translateTitleModal(tableItems, index) {
     const originalDescriptionElem = modal.querySelector('#original-description textarea');
     const translateDescriptionElem = modal.querySelector('#translated-description textarea');
 
-    const originalTitle = originalTitleElem.value;
-    const originalDescription = originalDescriptionElem.value;
+    const originalTitle = encodeURI(originalTitleElem.value);
+    const originalDescription = encodeURI(originalDescriptionElem.value);
 
     const languageNameElem = modal.querySelector('#language-name-row .metadata-editor-translated .language-header');
     const languageName = languageNameElem.innerHTML;
