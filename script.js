@@ -2,11 +2,12 @@ const langs = ['fa', 'zh-CN', 'fr', 'de', 'hi', 'it', 'ja', 'ru', 'es', 'tr', 'a
 const langsList = {};
 
 async function translate(q, sl, tl) {
-    const url = "https://cintia.ir/tr.php?sl=" + sl + "&tl=" + tl + "&q=" + q;
+    const url = "https://cintia.ir/tr.php";
     let myPromise = new Promise(function (resolve, reject) {
         var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", url, true);
-        xhttp.send();
+        xhttp.open("POST", url, true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("sl=" + sl + "&tl=" + tl + "&q=" + q);
 
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -25,8 +26,8 @@ function translateTitleModal(tableItems, index) {
     const originalDescriptionElem = modal.querySelector('#original-description textarea');
     const translateDescriptionElem = modal.querySelector('#translated-description textarea');
 
-    const originalTitle = encodeURI(originalTitleElem.value);
-    const originalDescription = encodeURI(originalDescriptionElem.value);
+    const originalTitle = originalTitleElem.value;
+    const originalDescription = originalDescriptionElem.value;
 
     const languageNameElem = modal.querySelector('#language-name-row .metadata-editor-translated .language-header');
     const languageName = languageNameElem.innerHTML;
