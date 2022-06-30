@@ -11,12 +11,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sl = $_GET['sl'];
 }
 
-$q = urlencode($q);
+$out = '';
+foreach (explode('.', $q) as $i) {
+    $i = trim($i);
+    $i = urlencode($i);
+    $url = "https://translate.google.com/m?hl=en&sl=$sl&tl=$tl&ie=UTF-8&prev=_m&q=$i";
+    $str = file_get_contents($url);
+    preg_match_all('/<div class="result-container">(.*?)<\/div>/s', $str, $matches);
+    $out .= $matches[1][0] . ' ';
+}
 
-$url = "https://translate.google.com/m?hl=en&sl=$sl&tl=$tl&ie=UTF-8&prev=_m&q=$q";
-
-$str = file_get_contents($url);
-
-preg_match_all('/<div class="result-container">(.*?)<\/div>/s', $str, $matches);
-$out = $matches[1][0];
 echo htmlspecialchars_decode($out, ENT_QUOTES);
