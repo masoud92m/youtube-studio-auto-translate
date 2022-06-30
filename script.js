@@ -2,11 +2,12 @@ const langs = ['fa', 'zh-CN', 'fr', 'de', 'hi', 'it', 'ja', 'ru', 'es', 'tr', 'a
 const langsList = {};
 
 async function translate(q, sl, tl) {
-    const url = "https://cintia.ir/tr.php?sl=" + sl + "&tl=" + tl + "&q=" + q;
+    const url = "https://cintia.ir/tr.php";
     let myPromise = new Promise(function (resolve, reject) {
         var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", url, true);
-        xhttp.send();
+        xhttp.open("POST", url, true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("sl=" + sl + "&tl=" + tl + "&q=" + q);
 
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {

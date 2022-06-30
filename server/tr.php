@@ -11,15 +11,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sl = $_GET['sl'];
 }
 
-$out = '';
-foreach (explode('.', $q) as $i) {
-    $i = trim($i);
-    if(strlen($i) == 0) continue;
-    $i = urlencode($i);
-    $url = "https://translate.google.com/m?hl=en&sl=$sl&tl=$tl&ie=UTF-8&prev=_m&q=$i";
+function tr($q)
+{
+    $q = urlencode($q);
+    $url = "https://translate.google.com/m?hl=en&sl=$sl&tl=$tl&ie=UTF-8&prev=_m&q=$q";
     $str = file_get_contents($url);
     preg_match_all('/<div class="result-container">(.*?)<\/div>/s', $str, $matches);
-    $out .= $matches[1][0] . ' ';
+    return $matches[1][0];
+}
+
+$out = '';
+$ex = explode("\n", $q);
+foreach ($ex as $line) {
+    $line = trim($line);
+    if (strlen($line) == 0) {
+        $out .= "\n";
+        continue;
+    }
+
+    if (strlen($line) > 70) {
+        foreach (explode('.', $line) as $p) {
+            $p = trim($p);
+            $out .= tr($line) . ' ';
+        }
+    } else {
+        $out .= tr($line);
+    }
+    if(count($ex) > 1) $out .= "\n";
 }
 
 echo htmlspecialchars_decode($out, ENT_QUOTES);
