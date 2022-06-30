@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sl = $_GET['sl'];
 }
 
-function tr($q)
+function tr($q, $sl, $tl)
 {
     $q = urlencode($q);
     $url = "https://translate.google.com/m?hl=en&sl=$sl&tl=$tl&ie=UTF-8&prev=_m&q=$q";
@@ -32,10 +32,10 @@ foreach ($ex as $line) {
     if (strlen($line) > 70) {
         foreach (explode('.', $line) as $p) {
             $p = trim($p);
-            $out .= tr($line) . ' ';
+            $out .= tr($line, $sl, $tl) . ' ';
         }
     } else {
-        $out .= tr($line);
+        $out .= tr($line, $sl, $tl);
     }
     if(count($ex) > 1) $out .= "\n";
 }
